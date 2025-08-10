@@ -1,6 +1,3 @@
-// im not a rust expert
-// nor a rust junior even
-
 #![allow(clippy::assigning_clones)]
 
 use rspotify::{prelude::*, scopes, AuthCodePkceSpotify, Credentials, OAuth};
@@ -17,25 +14,17 @@ async fn main() {
     let url = spotify.get_authorize_url(None).unwrap();
     spotify.prompt_for_token(&url).await.unwrap();
 
-    let mut off = 0;
+    let tracks = spotify.current_user_saved_tracks_manual(None, Some(50), None).await.unwrap();
 
-    loop {
-        let tracks = spotify.current_user_saved_tracks_manual(None, Some(50), Some(off)).await.unwrap();
-        for t in tracks.items {
-            for a in t.track.artists {
-                print!(" {} ", a.name); 
-            }
-            println!(" - {} ", t.track.name);
+    let tracks_total = tracks.total;
+
+    for t in tracks.items {
+    println!(" {} - ", t.track.name);
+        for a in t.track.artists {
+            print!(" {} ", a.name); 
         }
-
-        if tracks.next.is_none() {
-            break;
-        }
-
-        off += 50
     }
 
-    println!("end");
-
+    let a: i32 = 2;
 }
 
