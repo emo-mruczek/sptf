@@ -16,5 +16,12 @@ async fn main() {
 
     let tracks = spotify.current_user_saved_tracks_manual(None, None, None).await.unwrap();
 
-    println!("Response: {:#?}", tracks);
+    // println!("Response: {:#?}", tracks);
+    
+    for t in tracks.items {
+        for a in t.track.artists {
+            print!("{}, ", a.name); 
+        }
+        println!("- {}", t.track.name);
+    }
 }
